@@ -10,37 +10,45 @@ namespace SwordDamageV2
     {
         public const int BASE_DAMAGE = 3;
         public const int FLAME_DAMAGE = 2;
+        
+        public int Damage { get; private set; }
 
-        public int Roll;
-        public decimal MagicMultiplier = 1M;
-        public int FlamingDamage = 0;
-        public int Damage;
+        private int roll;
+        public int Roll
+        {
+            get { return roll; }
+            set
+            {
+                roll = value;
+                CalculateDamage();
+            }
+        }
+
+        private int flaming;
+        public int Flaming
+        {
+            get { return Flaming; }
+            set
+            {
+                flaming = value; 
+                CalculateDamage();
+            }
+        }
+
+        private int magic;
+        public int Magic
+        {
+            get { return magic; }
+            set
+            {
+                magic = value;
+                CalculateDamage();
+            }
+        }
 
         public void CalculateDamage()
         {
-            Damage = (int)(Roll * MagicMultiplier) + BASE_DAMAGE + FlamingDamage;
-        }
-
-        public void SetMagic(bool isMagic)
-        {
-            if (isMagic)
-            {
-                MagicMultiplier = 1.75M;
-            }
-            else
-            {
-                MagicMultiplier = 1M;
-            }
-            CalculateDamage();
-        }
-
-        public void SetFlaming(bool isFlaming)
-        {
-            CalculateDamage();
-            if (isFlaming)
-            {
-                Damage += FLAME_DAMAGE;
-            }
+            Damage = (int)(Roll * Magic) + BASE_DAMAGE + Flaming;
         }
     }
 }
