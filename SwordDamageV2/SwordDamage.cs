@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 namespace SwordDamageV2
 {
     class SwordDamage
-    {
+    { 
         public const int BASE_DAMAGE = 3;
         public const int FLAME_DAMAGE = 2;
-        
-        public int Damage { get; private set; }
 
+        /// <summary>
+        /// Contains total damage.
+        /// </summary>
+        public int Damage { get; private set; }
+        
         private int roll;
+        /// <summary>
+        /// Stores value of the simulated 3d6 roll.
+        /// </summary>
         public int Roll
         {
             get { return roll; }
@@ -24,10 +30,13 @@ namespace SwordDamageV2
             }
         }
 
-        private int flaming;
-        public int Flaming
+        private bool flaming;
+        /// <summary>
+        /// True if the sword is flaming, flase otherwise.
+        /// </summary>
+        public bool Flaming
         {
-            get { return Flaming; }
+            get { return flaming; }
             set
             {
                 flaming = value; 
@@ -35,8 +44,11 @@ namespace SwordDamageV2
             }
         }
 
-        private int magic;
-        public int Magic
+        private bool magic;
+        /// <summary>
+        /// True if the sword is magic, flase otherwise.
+        /// </summary>
+        public bool Magic
         {
             get { return magic; }
             set
@@ -46,9 +58,27 @@ namespace SwordDamageV2
             }
         }
 
-        public void CalculateDamage()
+        /// <summary>
+        /// Calculates the damage based on the current properties.
+        /// </summary>
+        private void CalculateDamage()
         {
-            Damage = (int)(Roll * Magic) + BASE_DAMAGE + Flaming;
+            decimal magicMultiplier = 1M;
+            if (magic) magicMultiplier = 1.75M;
+
+            Damage = BASE_DAMAGE;
+            Damage = (int)(Roll * magicMultiplier) + BASE_DAMAGE;
+            if (Flaming) Damage += FLAME_DAMAGE;
+        }
+
+        /// <summary>
+        /// Constructor calculates damage based on default Magic and Flaming values and a starting 3d6 roll.
+        /// </summary>
+        /// <param name="startingRoll">Starting 3d6 roll</param>
+        public SwordDamage(int startingRoll)
+        {
+            roll = startingRoll;
+            CalculateDamage();
         }
     }
 }

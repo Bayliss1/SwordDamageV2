@@ -4,10 +4,11 @@ namespace SwordDamageV2
 {
     class Program
     {
+        static Random random = new Random();
+
         static void Main(string[] args)
         {
-            SwordDamage swordDamage = new SwordDamage();
-            Random random = new Random();
+            SwordDamage swordDamage = new SwordDamage(RollDice());
 
             while (true)
             {
@@ -18,17 +19,21 @@ namespace SwordDamageV2
                     return;
                 }
 
-                int i;
-                for (i = 1; i < 4; i++)
-                {
-                    swordDamage.Roll = random.Next(1, 7) + swordDamage.Roll;
-                }
+                swordDamage.Roll = RollDice();
+                swordDamage.Magic = (userInput == "1" || userInput == "3");
+                swordDamage.Flaming = (userInput == "2" || userInput == "3");
 
-                swordDamage.SetMagic(userInput == "1" || userInput == "3");
-                swordDamage.SetFlaming(userInput == "2" || userInput == "3");
-
-                Console.WriteLine("Rolled " + swordDamage.Roll + " for " + swordDamage.Damage + " HP\n");
+                Console.WriteLine($"Rolled {swordDamage.Roll} for {swordDamage.Damage} HP\n");
             }
+        }
+
+        /// <summary>
+        /// Simulated 3d6 dice roll.
+        /// </summary>
+        /// <returns>Combination of three random numbers (each 1-7)</returns>
+        private static int RollDice()
+        {
+            return random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
         }
     }
 }
